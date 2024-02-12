@@ -10,29 +10,32 @@ class HUD{
     }
 
     show() {
+        fill(255, 255, 255);
         rect(700, 0, 100, 25);
-        text("Round: " + this.round, 725, 15);
+    
 
         rect(700, 25, 100, 25);
-        text("End Turn", 725, 40);
 
         rect(750, 50, 50, 50);
-        text("Open \n Tree", 750, 75);
 
         rect(0, 475, 200, 25);
-        text("Population: " + this.population + "/" + this.capacity, 10, 490);
         
         rect(150, 475, 150, 25);
-        text("Free Workers: " + this.available, 160, 490);
         rect(300, 475, 100, 25);
-        text("Money: " + this.gold, 310, 490);
 
         rect(400, 475, 100, 25);
-        text("Food: " + this.food, 410, 490);   
 
         rect(500, 475, 125, 25);
-        text("Knowledge: " + this.knowledge, 510, 490);
 
+        fill(0, 0, 0) // MAKE TEXT BLACK
+        text("Round: " + this.round, 725, 15);
+        text("End Turn", 725, 40);
+        text("Open \n Tree", 750, 75);
+        text("Population: " + this.population + "/" + this.capacity, 10, 490);
+        text("Free Workers: " + this.available, 160, 490);
+        text("Money: " + this.gold, 310, 490);
+        text("Food: " + this.food, 410, 490);   
+        text("Knowledge: " + this.knowledge, 510, 490);
     }
 
     clicked(mouseX, mouseY) {

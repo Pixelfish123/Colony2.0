@@ -8,7 +8,9 @@ class UpgradeButton {
     }
 
     show() {
+        fill(255);
         rect(this.x, this.y - 50, this.width, this.height);
+        fill(0);
         text("Upgrade", this.x, this.y - 50 + this.height/2);
     }
     clicked(mouseX, mouseY) {

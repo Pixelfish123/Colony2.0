@@ -1,7 +1,7 @@
 let visible = [];
+let bts = [];
 let skillTree;
 function setup() {
-  skillTree = new SkillTree();
   createCanvas(800, 500);
   let upgradeEfficiency = [0, 1.0, 1.25, 1.5, 1.8, 2.2, 2.6];
   let upgradeEfficiencyCity = [0, 50, 100, 150, 200, 250, 300];
@@ -20,6 +20,8 @@ function setup() {
   // HUD
   let hud = new HUD(population = 40, capacity=50, money = 100, food = 100);
   visible.push(hud);
+
+  skillTree = new SkillTree();
 }
 
 function draw() {
@@ -107,6 +109,8 @@ function mouseClicked(){
       // OPEN TREE
       if (visible[i].clicked(mouseX, mouseY) && visible[i].clicked(mouseX, mouseY)[0] == "Open Tree") {
         console.log("Open Tree");
+        bts = visible;
+        visible = [skillTree];
       }
 
       // END TURN
@@ -162,15 +166,25 @@ function mouseClicked(){
       
     }
 
+    // Skill Tree
+    if (visible[i] instanceof SkillTree) {
+      if (visible[i].clicked(mouseX, mouseY)) {
+        console.log("Close Tree");
+        visible = bts;
+      }
+    }
 
   }
 }
 
 function checkWin() {
+  if (visible.length == 1) {
+    return;
+  }
   let hud = visible.find((element) => {
     return (element instanceof HUD);
   });
-  if (hud.population == 0) {
+  if (hud.population <= 0) {
     console.log("Game over");
   }
   if (skillTree.unlocked[skillTree.unlocked.length - 1]) {

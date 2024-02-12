@@ -7,8 +7,10 @@ class AddButton {
         this.height = 50;
     }
 
-    show(){
+    show() {
+        fill(255);
         rect(this.x, this.y + 50, this.width, this.height);
+        fill(0);
         text("+people", this.x, this.y + 50 + this.height/2);
     }
 
