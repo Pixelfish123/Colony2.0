@@ -1,6 +1,7 @@
 let visible = [];
 let bts = [];
 let skillTree;
+let hud;
 function setup() {
   createCanvas(800, 500);
   let upgradeEfficiency = [0, 1.0, 1.25, 1.5, 1.8, 2.2, 2.6];
@@ -18,7 +19,7 @@ function setup() {
   visible.push(new Building("City", 500, 300, 50, 50, upgradeEfficiencyCity));
 
   // HUD
-  let hud = new HUD(population = 40, capacity=50, money = 100, food = 100);
+  hud = new HUD(population = 40, capacity=50, money = 100, food = 100);
   visible.push(hud);
 
   skillTree = new SkillTree();
@@ -26,6 +27,7 @@ function setup() {
 
 function draw() {
   background(220);
+  skillTree.knowledge = hud.knowledge;
   for (let i = 0; i < visible.length; i++) {
     visible[i].show();
     visible[i].hover(mouseX, mouseY);
@@ -111,6 +113,9 @@ function mouseClicked(){
         console.log("Open Tree");
         bts = visible;
         visible = [skillTree];
+        skillTree.skills.forEach(skill => {
+          visible.push(skill);
+        });
       }
 
       // END TURN
@@ -174,11 +179,27 @@ function mouseClicked(){
       }
     }
 
+    // Unlock Skill
+    if (visible[i] instanceof Skill) {
+      let skill = visible[i];
+      if (skill.clicked(mouseX, mouseY)) {
+        let skillTier = skill.tier;
+        if (!skillTree.unlocked[skillTier-1] && hud.knowledge >= skill.cost && skill.parent.some((parent) => {return parent.unlocked;})) {
+          console.log("Unlock " + skill.name)
+
+          skillTree.unlocked[skillTier-1] = true;
+          skill.unlocked = true;
+          hud.knowledge -= skill.cost;
+     
+        }
+      }
+    }
+
   }
 }
 
 function checkWin() {
-  if (visible.length == 1) {
+  if (visible[0] instanceof SkillTree) {
     return;
   }
   let hud = visible.find((element) => {
