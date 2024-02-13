@@ -21,7 +21,7 @@ class Skill{
         if (!this.unlocked) {
             fill(255);
         } else {
-            fill(200, 50,100, 200);
+            fill(50, 50,200);
         }
         circle(this.x, this.y, this.r);
         text(this.name, this.x, this.y + this.height / 2);
@@ -45,7 +45,7 @@ class Skill{
                 if (this.multipliers[key] > 1.0) {
                     multiplierText += key + ":  +" + 100*(this.multipliers[key]-1.0) + "%\n";
                 } else {
-                    multiplierText += key + ": -" + Math.trunc(100*(1 - this.multipliers[key]),2) + "%\n";
+                    multiplierText += key + ": " + Math.trunc(100*(this.multipliers[key]),2) + "%\n";
                 }
                 
             }
@@ -55,7 +55,7 @@ class Skill{
                 "Cost: " + this.cost + "\n" +
                 "---------------------\n" +
                 multiplierText;
-            text(this.description, 660, 360);
+            text(this.description, 660, 365);
             return true;
         }
     }

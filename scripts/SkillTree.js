@@ -10,15 +10,16 @@ class SkillTree {
       "Fecundity": 1.0, // Population Growth
       "Food Consumption": 1.0,
       "Combat Strength": 1.0,
-      "Immunity": 1.0,
+      "Immunity": 1.0
     }
     this.knowledge = 0;
+    this.activeSkills = [];
 
     //Tier 0
     let fish = new Skill("Fish", 0, 0, 400, 25, {});
 
     // Tier 1
-    let salamander = new Skill("Salamander", 50, 1, 150, 75, {});
+    let salamander = new Skill("Salamander", 50, 1, 150, 75, {"Heat Resistance": -0.25, "Cold Resistance": -0.25, "Food Consumption": -0.25});
     let eel = new Skill("Eel", 50, 1, 275, 75, {});
     let lizard = new Skill("Lizard", 50, 1, 350, 75, {});
     let turtle = new Skill("Turtle", 50, 1, 450, 75, {});
@@ -61,7 +62,7 @@ class SkillTree {
     let lobster = new Skill("Lobster", 800, 5, 450, 275, {});
     let seaHorse = new Skill("Sea Horse", 800, 5, 525, 275, {});
     let horse = new Skill("Horse", 800, 5, 600, 275, {});
-    let flyingSheep = new Skill("Flying Sheep", 800, 5, 675, 275, {});
+    let woolyBat = new Skill("Wooly Bat", 800, 5, 675, 275, {});
     let human = new Skill("Human", 800, 5, 750, 275, {});
     // Tier 6
     let spiderCrab = new Skill("Spider Crab", 1000, 6, 150, 325, {});
@@ -109,8 +110,8 @@ class SkillTree {
     chicken.addChildren([komodoDragon]);
     beakedDolphin.addChildren([lobster]);
     walrus.addChildren([seaHorse]);
-    sheep.addChildren([horse,flyingSheep]);
-    bat.addChildren([flyingSheep]);
+    sheep.addChildren([horse,woolyBat]);
+    bat.addChildren([woolyBat]);
     chimpanzee.addChildren([human]);
     // Tier 5
     spider.addChildren([spiderCrab]);
@@ -118,7 +119,7 @@ class SkillTree {
     lobster.addChildren([hermitCrab]);
     seaHorse.addChildren([horseCrab]);
     horse.addChildren([horseCrab]);
-    flyingSheep.addChildren([sheepCrab]);
+    woolyBat.addChildren([sheepCrab]);
     human.addChildren([landCrab]);
     // Tier 6
     spiderCrab.addChildren([kingCrab]);
@@ -133,7 +134,7 @@ class SkillTree {
       worm, frog, snake, bird, hippo, zebra, rodent, // Tier 2
       ant, moth, waterSnake, dinosaur, penguin, dolphin, seal, deer, bison, pangolin, monkey, // Tier 3
       beetle, dragonfly, crocodile, chicken, beakedDolphin, walrus, sheep, bat, chimpanzee, // Tier 4
-      spider, komodoDragon, lobster, seaHorse, horse, flyingSheep, human, // Tier 5
+      spider, komodoDragon, lobster, seaHorse, horse, woolyBat, human, // Tier 5
       spiderCrab, hermitCrab, horseCrab, sheepCrab, landCrab, // Tier 6
       kingCrab // Tier 7
     ]
@@ -144,21 +145,26 @@ class SkillTree {
 
   show() {
 
-    fill(255);
+    fill(150);
     rect(0, 0, 800, 500);
 
     // Close Button
-    fill(255);
+    fill(230);
     rect(780, 0, 20, 20);
     fill(0);
     text("x", 788, 12);
     
     //knowledge
-    fill(255);
-    rect(0, 474, 100, 25);
+    fill(255,255,255,100);
+    rect(0, 474, 125, 25);
     fill(0);
-    text("Knowledge: " + this.knowledge, 10, 490);
+    text("Knowledge: " + this.knowledge, 5, 490);
 
+    //View Stats
+    fill(255, 255, 255, 100);
+    rect(125, 474, 75, 25);
+    fill(0);
+    text("Stats", 130, 490);
     
   }
 
@@ -179,6 +185,24 @@ class SkillTree {
   }
 
   hover(mouseX, mouseY) {
-    // EMPTY
+    // View Stats
+    if (mouseX > 125 && mouseX < 200 && mouseY > 474 && mouseY < 500) {
+      fill(255);
+      rect(650, 350, 300, 150);
+      fill(0);
+      let multiplierText = "";
+      for (let key in this.multipliers) {
+        if (this.multipliers[key] > 1.0) {
+          multiplierText += key + ":  +" + 100 * (this.multipliers[key] - 1.0) + "%\n";
+        } else {
+          multiplierText += key + ": -" + Math.trunc(100 * (1 - this.multipliers[key]), 2) + "%\n";
+        }
+
+      }
+      this.description =
+        multiplierText;
+      text(this.description, 660, 370);
+      return true;
+    }
   }
 }
